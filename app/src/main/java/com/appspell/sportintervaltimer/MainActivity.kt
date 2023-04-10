@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 composable(Finish.route) {
-                    FinishContent(
+                    TimerSetupContent(
                         navController = navController
                     )
                 }
