@@ -44,7 +44,6 @@ fun TimerSetupContent(
     navController: NavHostController
 ) {
     val listState = rememberScalingLazyListState()
-    val state by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
         // TODO revisit navigation
@@ -69,16 +68,7 @@ fun TimerSetupContent(
             }
         ) {
             SetUpIntervalsContent(
-                setsText = state.sets,
-                workText = state.work,
-                restText = state.rest,
                 onStart = { viewModel.onSave() },
-                onSetsAdd = { viewModel.onSetsAdd() },
-                onSetsRemove = { viewModel.onSetsRemove() },
-                onWorkAdd = { viewModel.onWorkAdd() },
-                onWorkRemove = { viewModel.onWorkRemove() },
-                onRestAdd = { viewModel.onRestAdd() },
-                onRestRemove = { viewModel.onRestRemove() },
                 listState = listState
             )
         }
@@ -87,21 +77,11 @@ fun TimerSetupContent(
 
 @Composable
 private fun SetUpIntervalsContent(
-    setsText: String,
-    workText: String,
-    restText: String,
     onStart: () -> Unit,
-    onSetsAdd: () -> Unit,
-    onSetsRemove: () -> Unit,
-    onWorkAdd: () -> Unit,
-    onWorkRemove: () -> Unit,
-    onRestAdd: () -> Unit,
-    onRestRemove: () -> Unit,
     listState: ScalingLazyListState,
 ) {
     ScalingLazyColumn(
         state = listState,
-        contentPadding = PaddingValues(top = 16.dp),
         modifier = Modifier
             .fillMaxWidth()
     ) {
@@ -110,110 +90,11 @@ private fun SetUpIntervalsContent(
                 onClick = onStart,
             )
         }
-        item {
-            TimePickerRow(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                rowName = stringResource(id = R.string.timer_setup_set),
-                defaultValue = setsText,
-                onButtonAdd = onSetsAdd,
-                onButtonRemove = onSetsRemove
-            )
-        }
-        item {
-            TimePickerRow(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                rowName = stringResource(id = R.string.timer_setup_work),
-                defaultValue = workText,
-                onButtonAdd = onWorkAdd,
-                onButtonRemove = onWorkRemove
-            )
-        }
-        item {
-            TimePickerRow(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                rowName = stringResource(id = R.string.timer_setup_rest),
-                defaultValue = restText,
-                onButtonAdd = onRestAdd,
-                onButtonRemove = onRestRemove
-            )
-        }
-        item {
-            TimerSetupStartButton(
-                onClick = onStart,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-        }
-    }
 
+    }
     // Scroll to the first item
     LaunchedEffect(Unit) {
         listState.scrollToItem(0)
-    }
-}
-
-@Composable
-private fun TimePickerRow(
-    modifier: Modifier,
-    rowName: String,
-    defaultValue: String,
-    onButtonAdd: () -> Unit,
-    onButtonRemove: () -> Unit,
-) {
-    Row(
-        modifier = modifier
-            .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 0.dp)
-    ) {
-        Button(
-            onClick = { onButtonRemove() },
-            colors = ButtonDefaults.secondaryButtonColors(),
-            modifier = Modifier
-                .align(CenterVertically)
-                .size(BUTTON_SIZE)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_minus),
-                contentDescription = stringResource(id = R.string.button_minus)
-            )
-        }
-
-        Column(
-            modifier = Modifier
-                .padding(start = 8.dp, end = 8.dp)
-                .weight(1.0f)
-                .align(CenterVertically)
-        ) {
-            Text(
-                text = rowName,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.caption3,
-                maxLines = 1,
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Text(
-                text = defaultValue,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.body1,
-                maxLines = 1,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-
-        Button(
-            onClick = { onButtonAdd() },
-            colors = ButtonDefaults.secondaryButtonColors(),
-            modifier = Modifier
-                .align(CenterVertically)
-                .padding(top = 8.dp)
-                .size(BUTTON_SIZE)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_plus),
-                contentDescription = stringResource(id = R.string.button_plus)
-            )
-        }
     }
 }
 
@@ -223,7 +104,7 @@ private fun TimerSetupStartButton(
     onClick: () -> Unit
 ) {
     Button(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         onClick = { onClick() },
     ) {
         Text(text = stringResource(R.string.timer_setup_start_button))

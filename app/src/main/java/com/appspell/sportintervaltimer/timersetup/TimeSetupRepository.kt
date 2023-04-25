@@ -6,15 +6,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-private const val DEFAULT_SETS = 6
-private const val DEFAULT_WORK_SECONDS = 90
-private const val DEFAULT_REST_SECONDS = 30
+private const val DEFAULT_SETS = 1
+private const val DEFAULT_WORK_SECONDS = 30
+private const val DEFAULT_REST_SECONDS = 0
 
 // TODO replace it when implement a list
 private const val SAVED_DEFAULT_NAME = "Default"
 
 class TimeSetupRepository @Inject constructor(
     private val intervalsDao: SavedIntervalDao
+
 ) {
 
     fun observeSavedInterval(): Flow<TimerSetupDataState> = flow {
